@@ -1,6 +1,8 @@
 package App.Services;
 
 import App.dtos.IsDuringSessionDTO;
+import App.utils.BlockedWebsitesHandler;
+import App.utils.MetaDataFileHandler;
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.model.Event;
 
@@ -19,8 +21,10 @@ import java.util.Optional;
 public class EventService {
     private List<Event> eventList;
     private static final String WORKING_EVENT_NAME = "Worku";
+    private WebsiteBlockerService websiteBlockerService;
     public EventService(List<Event> eventList) {
         this.eventList = eventList;
+        websiteBlockerService = new WebsiteBlockerService();
     }
 
 
@@ -33,24 +37,36 @@ public class EventService {
     }
 
     public List<Event> getTodaysWorkingEvents() {
-        return eventList.stream().filter(event -> event.getSummary().equals(WORKING_EVENT_NAME)).toList();
+        return eventList.stream()
+                .filter(event -> event.getSummary() != null)
+                .filter(event -> event.getSummary().equals(WORKING_EVENT_NAME)).toList();
     }
-
+    private void handleMetaDataFile(boolean shouldBeBlocked) throws IOException, InterruptedException {
+        MetaDataFileHandler metaDataFileHandler = new MetaDataFileHandler();
+        String currentState = metaDataFileHandler.getCurrentState();
+        if(!shouldBeBlocked && currentState.equals("blocked")){
+            websiteBlockerService.unblock();
+            metaDataFileHandler.handleMetaDataFile("unblocked");
+        }
+        // maybe this will be needed
+       // if(shouldBeBlocked && currentState.equals("unblocked")){}
+    }
     public void processEvents() throws IOException, InterruptedException {
         List<Event> todaysWorkingEvents = getTodaysWorkingEvents();
         if (todaysWorkingEvents.isEmpty()) {
             System.out.println("no working events today :C");
+            handleMetaDataFile(false);
             return;
         }
         // sprawdzamy czy nie jestesmy w sesji jakiegos bo jak tak to we prolly should start sesja
         Optional<Event> currentWorkingEvent = todaysWorkingEvents.stream().filter(e1 -> e1.getStart().getDateTime().getValue() <= System.currentTimeMillis() && System.currentTimeMillis() <= e1.getEnd().getDateTime().getValue())
                 .findFirst();
         if(currentWorkingEvent.isPresent()) {
-            WebsiteBlockerService websiteBlockerService = new WebsiteBlockerService();
             websiteBlockerService.block(currentWorkingEvent.get());
             System.out.println("we blokin");
             return;
         }
+        handleMetaDataFile(false);
         // jak nie jestesmy w zadnej sesji to czekamy na najblizszy
         Optional<Event> closestWorkingEvent = todaysWorkingEvents.stream()
                 .filter(e1 -> e1.getStart().getDateTime().getValue() >= System.currentTimeMillis())
@@ -60,8 +76,12 @@ public class EventService {
             WebsiteBlockerService websiteBlockerService = new WebsiteBlockerService();
             websiteBlockerService.waitAndBlock(closestWorkingEvent.get());
             System.out.println("we waiting and blocking after " + (closestWorkingEvent.get().getStart().getDateTime().getValue()-System.currentTimeMillis()) +" millis");
+            return;
         }
-
+        List<Event> remainingEventsForToday = todaysWorkingEvents.stream().filter(e1 -> e1.getStart().getDateTime().getValue() >= System.currentTimeMillis()).toList();
+        if(!remainingEventsForToday.isEmpty()){
+            processEvents();
+        }
     }
 
     public IsDuringSessionDTO isInWorkingSession() {
