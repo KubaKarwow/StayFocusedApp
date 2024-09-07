@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.security.GeneralSecurityException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Collections;
@@ -51,8 +52,7 @@ public class GoogleCalendarConnection {
         return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
     }
 
-    public static void main(String... args) throws IOException, GeneralSecurityException {
-        // Ustaw połączenie HTTP
+    public static List<Event> getEvents() throws GeneralSecurityException, IOException {
         final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
 
         // Zainicjuj Calendar API
@@ -60,14 +60,14 @@ public class GoogleCalendarConnection {
                 .setApplicationName(APPLICATION_NAME)
                 .build();
 
-        // Oblicz daty początku i końca bieżącego tygodnia
-        LocalDate now = LocalDate.now(ZoneId.systemDefault());
-        LocalDate startOfWeek = now.with(TemporalAdjusters.previousOrSame(java.time.DayOfWeek.MONDAY));
-        LocalDate endOfWeek = now.with(TemporalAdjusters.nextOrSame(java.time.DayOfWeek.SUNDAY));
+        // Oblicz daty początku i końca dzisiejszego dnia
+        LocalDate today = LocalDate.now();
+        LocalDateTime startOfDay = today.atStartOfDay();
+        LocalDateTime endOfDay = today.atTime(23, 59, 59);
 
         // Konwertuj na DateTime (Google API)
-        DateTime timeMin = new DateTime(java.util.Date.from(startOfWeek.atStartOfDay(ZoneId.systemDefault()).toInstant()));
-        DateTime timeMax = new DateTime(java.util.Date.from(endOfWeek.atTime(23, 59, 59).atZone(ZoneId.systemDefault()).toInstant()));
+        DateTime timeMin = new DateTime(java.util.Date.from(startOfDay.atZone(ZoneId.systemDefault()).toInstant()));
+        DateTime timeMax = new DateTime(java.util.Date.from(endOfDay.atZone(ZoneId.systemDefault()).toInstant()));
 
         // Pobierz wydarzenia w zakresie czasowym
         Events events = service.events().list("primary")
@@ -79,13 +79,15 @@ public class GoogleCalendarConnection {
 
         List<Event> items = events.getItems();
         if (items.isEmpty()) {
-            System.out.println("Brak wydarzeń w tym tygodniu.");
+            System.out.println("Brak wydarzeń dzisiaj.");
         } else {
-            System.out.println("Wydarzenia w tym tygodniu:");
+            System.out.println("Wydarzenia dzisiaj:");
             for (Event event : items) {
                 String start = event.getStart().getDateTime() != null ? event.getStart().getDateTime().toString() : event.getStart().getDate().toString();
                 System.out.printf("%s (%s)\n", event.getSummary(), start);
             }
         }
+        return items;
     }
+
 }
