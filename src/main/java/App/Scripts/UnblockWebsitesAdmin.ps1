@@ -1,5 +1,5 @@
 param (
-    [string]$jarPath = "libs/UnblockWebsites.jar"
+    [string]$jarPath
 )
 
 # Sprawdzenie, czy skrypt jest uruchamiany z uprawnieniami administratora
