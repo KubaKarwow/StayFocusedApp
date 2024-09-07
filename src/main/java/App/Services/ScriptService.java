@@ -46,11 +46,12 @@ public class ScriptService {
 
     public static void runUnblockWebsitesScript() throws IOException, InterruptedException {
         String scriptPath = "Scripts/UnblockWebsitesAdmin.ps1";
+        String jarPath = "UnblockWebsites.jar"; // Ścieżka do JARa
 
         // Komenda do uruchomienia skryptu PowerShell
         StringBuilder commandBuilder = new StringBuilder();
-        commandBuilder.append("powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"")
-                .append(scriptPath);
+        commandBuilder.append("powershell.exe -NoProfile -ExecutionPolicy RemoteSigned -File \"")
+                .append(scriptPath).append("\" -jarPath \"").append(jarPath).append("\"");
 
         String command = commandBuilder.toString().trim();
         System.out.println(command);

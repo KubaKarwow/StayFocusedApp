@@ -10,8 +10,9 @@ public class WebsiteBlockerService {
     public void block(Event currentWorkingEvent) throws IOException, InterruptedException {
         ScriptService.runBlockWebsitesScript(List.of("facebook.com","youtube.com"));
         System.out.println("script wywolany");
-        //Thread.sleep(10000);
-        //ScriptService.runUnblockWebsitesScript();
+        Thread.sleep(4000);
+        System.out.println("TU BEDZIEMY ODBLOKOWYWAC STRONY ");
+        ScriptService.runUnblockWebsitesScript();
     }
 
     public void waitAndBlock(Event event) {

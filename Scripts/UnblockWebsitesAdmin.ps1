@@ -1,19 +1,35 @@
 param (
-    [string]$jarPath
+    [string]$jarFileName
 )
 
-# Sprawdzenie, czy skrypt jest uruchamiany z uprawnieniami administratora
+# Ustal katalog roboczy skryptu
+$scriptDirectory = Split-Path -Parent $MyInvocation.MyCommand.Path
+
+# Ustal katalogi
+$libsDirectory = Join-Path -Path $scriptDirectory -ChildPath "..\libs"
+$logDirectory = Join-Path -Path $scriptDirectory -ChildPath "..\logs"
+
+# Rozwiązywanie ścieżek
+$libsDirectory = Resolve-Path -Path $libsDirectory
+$logDirectory = Resolve-Path -Path $logDirectory
+
+# Ścieżka do pliku JAR
+$jarPath = Join-Path -Path $libsDirectory -ChildPath "UnblockWebsites.jar"
+
+Write-Host "Current script directory: $scriptDirectory"
+Write-Host "JAR file path: $jarPath"
+Write-Host "Libraries directory: $libsDirectory"
+
+# Sprawdzenie, czy skrypt ma uprawnienia administratora
 if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator"))
 {
     # Jeśli nie, ponowne uruchomienie skryptu jako administrator z tymi samymi argumentami
-    $arguments = "-jarPath `"$jarPath`""
-    Start-Process powershell -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$($myInvocation.MyCommand.Definition)`" $arguments" -Verb RunAs
+    $arguments = "-jarFileName `"$jarFileName`""
+    Start-Process powershell -ArgumentList "-NoProfile -ExecutionPolicy RemoteSigned -File `"$($MyInvocation.MyCommand.Path)`" $arguments" -Verb RunAs
     exit
 }
 
-# Uruchomienie skryptu z uprawnieniami administratora
-Write-Host "Running with administrator privileges"
-
+# Sprawdzenie istnienia pliku JAR
 if (-not [System.IO.File]::Exists($jarPath)) {
     Write-Error "Plik JAR nie został znaleziony: $jarPath"
     exit 1
@@ -22,5 +38,7 @@ if (-not [System.IO.File]::Exists($jarPath)) {
 # Utworzenie komendy do uruchomienia JAR
 $command = "java -jar `"$jarPath`""
 
-# Uruchomienie pliku JAR bez dodatkowych argumentów
+Write-Host "Running command: $command"
+
+# Wywołanie JAR
 Invoke-Expression $command
