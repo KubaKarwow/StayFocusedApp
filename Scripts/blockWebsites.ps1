@@ -3,19 +3,37 @@ param (
     [string]$websites
 )
 
-Write-Host "Current script directory: $PSScriptRoot"
+# Ustal katalog roboczy skryptu
+$scriptDirectory = Split-Path -Parent $MyInvocation.MyCommand.Path
+
+# Ustal katalogi
+$libsDirectory = Join-Path -Path $scriptDirectory -ChildPath "..\libs"
+$logDirectory = Join-Path -Path $scriptDirectory -ChildPath "..\logs"
+
+# Rozwiązywanie ścieżek
+$libsDirectory = Resolve-Path -Path $libsDirectory
+$logDirectory = Resolve-Path -Path $logDirectory
+
+# Ścieżka do pliku JAR
+$jarPath = Join-Path -Path $libsDirectory -ChildPath "blockWebsites.jar"
+
+
+Write-Host "Current script directory: $scriptDirectory"
+Write-Host "JAR file path: $jarPath"
+Write-Host "libs file path: $libsDirectory"
+
 
 # Sprawdzenie, czy skrypt ma uprawnienia administratora
 if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
     $arguments = "-jarPath `"$jarPath`" -websites `"$websites`""
-    Start-Process powershell -ArgumentList "-NoProfile -ExecutionPolicy RemoteSigned -File `"$($myInvocation.MyCommand.Definition)`" $arguments" -Verb RunAs
+    Start-Process powershell -ArgumentList "-NoProfile -ExecutionPolicy RemoteSigned -File `"$($MyInvocation.MyCommand.Path)`" $arguments" -Verb RunAs
     exit
 }
 
 # Sprawdzenie istnienia pliku JAR
 if (-not [System.IO.File]::Exists($jarPath)) {
     Write-Error "Plik JAR nie został znaleziony: $jarPath"
-    Read-Host "poczekaj byku"
+    Read-Host "Press Enter to exit"
     Start-Sleep -Seconds 9999
     exit 1
 }
@@ -29,7 +47,6 @@ $command = "java -jar `"$jarPath`" $arguments"
 Write-Host "Running command: $command"
 
 # Ścieżki do plików logów
-$logDirectory = "C:\Users\Jakub\Desktop\myJavaProjects\StayFocusedApp\GoogleApiTest\logs"
 $outputLog = Join-Path -Path $logDirectory -ChildPath "output.log"
 $errorLog = Join-Path -Path $logDirectory -ChildPath "error.log"
 
@@ -58,4 +75,6 @@ if (Test-Path $errorLog) {
     Write-Host "No error log file found."
 }
 
-
+# Opcjonalnie: usunięcie plików logów po użyciu
+Remove-Item $outputLog -ErrorAction SilentlyContinue
+Remove-Item $errorLog -ErrorAction SilentlyContinue

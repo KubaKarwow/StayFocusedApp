@@ -8,8 +8,8 @@ import java.util.List;
 public class ScriptService {
 
     public static void runBlockWebsitesScript(List<String> args) throws IOException, InterruptedException {
-        String scriptPath = "src/main/java/App/Scripts/blockWebsites.ps1"; // Użyj absolutnej ścieżki
-        String jarPath = "C:\\Users\\Jakub\\Desktop\\myJavaProjects\\StayFocusedApp\\GoogleApiTest\\libs\\blockWebsites.jar"; // Ścieżka do JARa
+        String scriptPath = "Scripts/blockWebsites.ps1"; // Użyj absolutnej ścieżki
+        String jarPath = "blockWebsites.jar"; // Ścieżka do JARa
 
         // Komenda do uruchomienia skryptu PowerShell
         StringBuilder commandBuilder = new StringBuilder();
@@ -45,7 +45,7 @@ public class ScriptService {
     }
 
     public static void runUnblockWebsitesScript() throws IOException, InterruptedException {
-        String scriptPath = "src/main/java/App/Scripts/UnblockWebsitesAdmin.ps1";
+        String scriptPath = "Scripts/UnblockWebsitesAdmin.ps1";
 
         // Komenda do uruchomienia skryptu PowerShell
         StringBuilder commandBuilder = new StringBuilder();
