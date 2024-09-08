@@ -20,7 +20,7 @@ import java.util.Optional;
 
 public class EventService {
     private List<Event> eventList;
-    private static final String WORKING_EVENT_NAME = "Worku";
+    private static final String WORKING_EVENT_NAME = "Working";
     private WebsiteBlockerService websiteBlockerService;
     public EventService(List<Event> eventList) {
         this.eventList = eventList;
