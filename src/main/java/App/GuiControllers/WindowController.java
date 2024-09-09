@@ -35,12 +35,17 @@ public class WindowController {
     private TextField websiteToBlockField;
     @FXML
     private Button exitButton;
+    @FXML
+    private Label processingOutcomeLabel;
+    @FXML
+    private Button outcomeHideButton;
+
     private String currentlySelected="";
+
     @FXML
     protected void exitWebsitesEdit(){
         websitePane.setVisible(false);
     }
-
 
     @FXML
     protected void deleteWebsite() throws IOException {
@@ -79,7 +84,16 @@ public class WindowController {
     protected void processEvents() throws IOException, InterruptedException, GeneralSecurityException {
         List<Event> events = GoogleCalendarConnection.getEvents();
         EventService eventService = new EventService(events);
-        eventService.processEvents();
+        String processingOutcome = eventService.processEvents();
+        processingOutcomeLabel.setText(processingOutcome);
+        processingOutcomeLabel.setVisible(true);
+        outcomeHideButton.setVisible(true);
+
+    }
+    @FXML
+    protected void hideOutcome(){
+        processingOutcomeLabel.setVisible(false);
+        outcomeHideButton.setVisible(false);
     }
 
     @FXML

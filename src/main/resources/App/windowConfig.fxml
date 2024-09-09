@@ -35,10 +35,6 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
@@ -46,71 +42,42 @@
 
 <VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="App.GuiControllers.WindowController">
     <children>
-        <MenuBar style="-fx-background-color: #C7FFD8;" VBox.vgrow="NEVER">
-            <menus>
-                <Menu mnemonicParsing="false" text="File">
-                    <items>
-                        <MenuItem mnemonicParsing="false" text="New" />
-                        <MenuItem mnemonicParsing="false" text="Open…" />
-                        <Menu mnemonicParsing="false" text="Open Recent" />
-                        <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" text="Close" />
-                        <MenuItem mnemonicParsing="false" text="Save" />
-                        <MenuItem mnemonicParsing="false" text="Save As…" />
-                        <MenuItem mnemonicParsing="false" text="Revert" />
-                        <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" text="Preferences…" />
-                        <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" text="Quit" />
-                    </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Edit">
-                    <items>
-                        <MenuItem mnemonicParsing="false" text="Undo" />
-                        <MenuItem mnemonicParsing="false" text="Redo" />
-                        <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" text="Cut" />
-                        <MenuItem mnemonicParsing="false" text="Copy" />
-                        <MenuItem mnemonicParsing="false" text="Paste" />
-                        <MenuItem mnemonicParsing="false" text="Delete" />
-                        <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" text="Select All" />
-                        <MenuItem mnemonicParsing="false" text="Unselect All" />
-                    </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Help">
-                    <items>
-                        <MenuItem mnemonicParsing="false" text="About MyHelloApp" />
-                    </items>
-                </Menu>
-            </menus>
-        </MenuBar>
         <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" style="-fx-background-color: #98DED9;" VBox.vgrow="ALWAYS">
             <children>
-                <Label id="sessionTextLabel" alignment="CENTER" layoutX="220.0" layoutY="87.0" prefHeight="47.0" prefWidth="198.0" text="Session 2 / 4" />
-                <Label id="timeLeftText" alignment="CENTER" layoutX="195.0" layoutY="110.0" prefHeight="100.0" prefWidth="250.0" text="25:00" textAlignment="CENTER">
+                <Label id="sessionTextLabel" fx:id="sessionLabel" alignment="CENTER" layoutX="220.0" layoutY="87.0" prefHeight="47.0" prefWidth="198.0" text="Session 2 / 4" />
+                <Label id="timeLeftText" fx:id="timerLabel" alignment="CENTER" layoutX="195.0" layoutY="110.0" prefHeight="100.0" prefWidth="250.0" text="25:00" textAlignment="CENTER">
                     <font>
                         <Font name="Microsoft Sans Serif" size="39.0" />
                     </font>
                 </Label>
-                <Label id="currentActivityText" alignment="CENTER" layoutX="235.0" layoutY="21.0" prefHeight="47.0" prefWidth="168.0" text="Working" textAlignment="CENTER">
+                <Label id="currentActivityText" fx:id="currentStateLabel" alignment="CENTER" layoutX="235.0" layoutY="21.0" prefHeight="47.0" prefWidth="168.0" text="Working" textAlignment="CENTER">
                     <font>
                         <Font name="Microsoft Sans Serif" size="39.0" />
                     </font>
                 </Label>
-                <Label id="timeLeftText" alignment="CENTER" layoutX="-1.0" layoutY="234.0" prefHeight="65.0" prefWidth="640.0" style="-fx-background-color: #C7FFD8;" text="You got this!" textAlignment="CENTER">
+                <Label id="timeLeftText" fx:id="motivationalTextLabel" alignment="CENTER" layoutX="-1.0" layoutY="234.0" prefHeight="65.0" prefWidth="640.0" style="-fx-background-color: #C7FFD8;" text="You got this!" textAlignment="CENTER">
                     <font>
                         <Font name="Microsoft Sans Serif" size="39.0" />
                     </font>
                 </Label>
-                <AnchorPane layoutY="296.0" prefHeight="78.0" prefWidth="642.0" style="-fx-background-color: #BDE8CA;">
+                <AnchorPane layoutX="-3.0" layoutY="299.0" prefHeight="100.0" prefWidth="642.0" style="-fx-background-color: #BDE8CA;">
                     <children>
-                        <Button fx:id="editWebsitesButton" layoutX="142.0" layoutY="27.0" mnemonicParsing="false" onAction="#editWebsiteList" text="Edit website list " />
-                        <Button fx:id="processEventsButton" layoutX="262.0" layoutY="21.0" mnemonicParsing="false" onAction="#processEvents" prefHeight="36.0" prefWidth="119.0" text="Process events" />
-                        <Button layoutX="400.0" layoutY="27.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="119.0" text="some new stuff" />
+                        <Button fx:id="editWebsitesButton" layoutX="141.0" layoutY="40.0" mnemonicParsing="false" onAction="#editWebsiteList" text="Edit website list " />
+                        <Button fx:id="processEventsButton" layoutX="262.0" layoutY="34.0" mnemonicParsing="false" onAction="#processEvents" prefHeight="36.0" prefWidth="119.0" text="Process events" />
+                        <Button layoutX="402.0" layoutY="40.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="119.0" text="some new stuff" />
+                  <Label fx:id="processingOutcomeLabel" alignment="CENTER" layoutY="-5.0" prefHeight="36.0" prefWidth="645.0" style="-fx-background-color: #FEFBD8;" text="processing outcome" visible="false">
+                     <font>
+                        <Font size="22.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="outcomeHideButton" layoutX="593.0" layoutY="2.0" mnemonicParsing="false" onAction="#hideOutcome" text="hide" visible="false">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Button>
                     </children>
                 </AnchorPane>
-            <AnchorPane fx:id="websitePane" layoutX="178.0" prefHeight="374.0" prefWidth="287.0" style="-fx-background-color: #FEFAE0;">
+            <AnchorPane fx:id="websitePane" layoutX="178.0" prefHeight="374.0" prefWidth="287.0" style="-fx-background-color: #FEFAE0;" visible="false">
                <children>
                   <Label fx:id="editWebsitesLabel" alignment="CENTER" layoutX="-1.0" prefHeight="54.0" prefWidth="287.0" text="Edit Websites " textAlignment="CENTER" textFill="#cda397">
                      <font>
