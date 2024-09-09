@@ -11,4 +11,14 @@ public class BlockedWebsitesHandler {
     public List<String> getWebsitesToBlock() throws IOException {
         return Files.readAllLines(Paths.get(WEBSITES_TO_BLOCK_FILE_LOCATION));
     }
+    public void deleteWebsite(String website) throws IOException {
+        List<String> lines = Files.readAllLines(Paths.get(WEBSITES_TO_BLOCK_FILE_LOCATION));
+        lines.remove(website);
+        Files.write(Paths.get(WEBSITES_TO_BLOCK_FILE_LOCATION), lines);
+    }
+    public void addWebsite(String website) throws IOException {
+        List<String> lines = Files.readAllLines(Paths.get(WEBSITES_TO_BLOCK_FILE_LOCATION));
+        lines.add(website);
+        Files.write(Paths.get(WEBSITES_TO_BLOCK_FILE_LOCATION), lines);
+    }
 }
