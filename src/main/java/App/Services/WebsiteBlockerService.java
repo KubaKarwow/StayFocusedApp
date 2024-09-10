@@ -9,19 +9,15 @@ import java.util.List;
 
 public class WebsiteBlockerService {
 
-    public void block(Event currentWorkingEvent) throws IOException {
+    public void block(Event currentWorkingEvent) throws IOException, InterruptedException {
         BlockedWebsitesHandler blockedWebsitesHandler = new BlockedWebsitesHandler();
         List<String> websitesToBlock = blockedWebsitesHandler.getWebsitesToBlock();
-
-        try {
-            ScriptService.runBlockWebsitesScript(websitesToBlock);
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
-        } finally {
-            MetaDataFileHandler metaDataFileHandler = new MetaDataFileHandler();
-            metaDataFileHandler.handleMetaDataFile("blocked");
+        boolean didScriptGoThrough = ScriptService.runBlockWebsitesScript(websitesToBlock);
+        if(!didScriptGoThrough){
+            return;
         }
-
+        MetaDataFileHandler metaDataFileHandler = new MetaDataFileHandler();
+        metaDataFileHandler.handleMetaDataFile("blocked");
 
         new Thread(() -> {
             long millisToBlockFor = currentWorkingEvent.getEnd().getDateTime().getValue()-System.currentTimeMillis();
@@ -35,15 +31,10 @@ public class WebsiteBlockerService {
                 secondsToBlockFor--;
                 System.out.println(secondsToBlockFor +  "till we unblock");
             }
+
             try {
                 unblock();
             } catch (IOException | InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            MetaDataFileHandler metaDataFileHandler = new MetaDataFileHandler();
-            try {
-                metaDataFileHandler.handleMetaDataFile("unblocked");
-            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }).start();
@@ -51,7 +42,12 @@ public class WebsiteBlockerService {
 
     }
     public void unblock() throws IOException, InterruptedException {
-        ScriptService.runUnblockWebsitesScript();
+        boolean scriptWentThrough = ScriptService.runUnblockWebsitesScript();
+        if(scriptWentThrough){
+            MetaDataFileHandler metaDataFileHandler = new MetaDataFileHandler();
+            metaDataFileHandler.handleMetaDataFile("unblocked");
+        }
+
     }
     public void waitAndBlock(Event event) throws InterruptedException, IOException {
         new Thread( () -> {
@@ -68,7 +64,7 @@ public class WebsiteBlockerService {
             }
             try {
                 block(event);
-            } catch (IOException e) {
+            } catch (IOException | InterruptedException e) {
                 throw new RuntimeException(e);
             }
         }).start();

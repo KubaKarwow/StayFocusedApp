@@ -7,7 +7,7 @@ import java.util.List;
 
 public class ScriptService {
 
-    public static void runBlockWebsitesScript(List<String> args) throws IOException, InterruptedException {
+    public static boolean runBlockWebsitesScript(List<String> args) throws IOException, InterruptedException {
         String scriptPath = "Scripts/blockWebsites.ps1"; // Użyj absolutnej ścieżki
         String jarPath = "blockWebsites.jar"; // Ścieżka do JARa
 
@@ -37,14 +37,21 @@ public class ScriptService {
         String line;
         while ((line = reader.readLine()) != null) {
             System.out.println(line);
+            //script didnt go through
+            if(line.contains("Write-Error")){
+                return false;
+            }
         }
 
         // Oczekiwanie na zakończenie procesu
         int exitCode = process.waitFor();
+        int i = process.exitValue();
+        System.out.println("FAKTYCZNY EXIT CODE " + i);
         System.out.println("Exit Code: " + exitCode);
+        return true;
     }
 
-    public static void runUnblockWebsitesScript() throws IOException, InterruptedException {
+    public static boolean runUnblockWebsitesScript() throws IOException, InterruptedException {
         String scriptPath = "Scripts/UnblockWebsitesAdmin.ps1";
         String jarPath = "UnblockWebsites.jar"; // Ścieżka do JARa
 
@@ -67,11 +74,14 @@ public class ScriptService {
         String line;
         while ((line = reader.readLine()) != null) {
             System.out.println(line);
+            if(line.contains("Write-Error")){
+                return false;
+            }
         }
 
         // Czekanie na zakończenie procesu
         int exitCode = process.waitFor();
         System.out.println("Exit Code: " + exitCode);
-
+        return true;
     }
 }

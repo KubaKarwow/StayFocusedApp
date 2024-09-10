@@ -21,12 +21,16 @@ Write-Host "JAR file path: $jarPath"
 Write-Host "Libraries directory: $libsDirectory"
 
 # Sprawdzenie, czy skrypt ma uprawnienia administratora
-if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator"))
-{
-    # Jeśli nie, ponowne uruchomienie skryptu jako administrator z tymi samymi argumentami
-    $arguments = "-jarFileName `"$jarFileName`""
-    Start-Process powershell -ArgumentList "-NoProfile -ExecutionPolicy RemoteSigned -File `"$($MyInvocation.MyCommand.Path)`" $arguments" -Verb RunAs
-    exit
+if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
+     $arguments = "-jarFileName `"$jarFileName`""
+     try {
+            # Próba uruchomienia skryptu jako administrator
+            Start-Process powershell -ArgumentList "-NoProfile -ExecutionPolicy RemoteSigned -File `"$($MyInvocation.MyCommand.Path)`" $arguments" -Verb RunAs -ErrorAction Stop
+            exit 0  # Wyjście z kodem sukcesu, ponieważ użytkownik zgodził się na podniesienie uprawnień
+        } catch {
+            Write-Error "Odmowa nadania uprawnień administratora. Skrypt nie może kontynuować."
+            exit 1  # Kod błędu 1, gdy użytkownik odmówił podniesienia uprawnień
+        }
 }
 
 # Sprawdzenie istnienia pliku JAR
