@@ -34,7 +34,7 @@ public class GoogleCalendarConnection {
 
     // Zakresy, które będą wymagane (pełny dostęp do kalendarza)
     private static final List<String> SCOPES = Collections.singletonList(CalendarScopes.CALENDAR_READONLY);
-    private static final String CREDENTIALS_FILE_PATH = "src/main/resources/client_secret_740675932445-nl7b5oj3tvuerhr8e4sd7bhvs42chvql.apps.googleusercontent.com (1).json";
+    private static final String CREDENTIALS_FILE_PATH = "src/main/resources/client_secret_740675932445-nl7b5oj3tvuerhr8e4sd7bhvs42chvql.apps.googleusercontent.com-1.json";
 
     private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
         // Wczytaj plik credentials.json

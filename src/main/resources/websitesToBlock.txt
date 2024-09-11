@@ -1,3 +1,5 @@
 youtube.com
 netflix.com
 facebook.com
+google.com
+music.youtube.com

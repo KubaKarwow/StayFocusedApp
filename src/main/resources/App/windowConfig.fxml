@@ -34,8 +34,6 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -77,20 +75,6 @@
                   </Button>
                     </children>
                 </AnchorPane>
-            <AnchorPane fx:id="websitePane" layoutX="178.0" prefHeight="374.0" prefWidth="287.0" style="-fx-background-color: #FEFAE0;" visible="false">
-               <children>
-                  <Label fx:id="editWebsitesLabel" alignment="CENTER" layoutX="-1.0" prefHeight="54.0" prefWidth="287.0" text="Edit Websites " textAlignment="CENTER" textFill="#cda397">
-                     <font>
-                        <Font size="36.0" />
-                     </font>
-                  </Label>
-                  <ListView fx:id="websitesToBlockListView" editable="true" layoutY="32.0" prefHeight="330.0" prefWidth="287.0" style="-fx-background-color: #FAEDCE;" />
-                  <Button fx:id="DeleteWebsiteButton" layoutY="324.0" mnemonicParsing="false" onAction="#deleteWebsite" text="delete selected" />
-                  <Button fx:id="AddNewWebsiteButton" layoutX="190.0" layoutY="324.0" mnemonicParsing="false" onAction="#addNewWebsite" prefHeight="25.0" prefWidth="96.0" text="add new " />
-                  <TextField fx:id="websiteToBlockField" layoutY="349.0" prefHeight="25.0" prefWidth="287.0" promptText="new website to block example facebook.com" />
-                  <Button fx:id="exitButton" layoutX="105.0" layoutY="324.0" mnemonicParsing="false" onAction="#exitWebsitesEdit" prefHeight="25.0" prefWidth="77.0" text="exit" />
-               </children>
-            </AnchorPane>
             </children>
         </AnchorPane>
     </children>
