@@ -3,8 +3,11 @@ package App.GuiControllers;
 import App.GoogleCalendarConnection;
 import App.Main;
 import App.Services.EventService;
+import App.dtos.PomodoroSession;
+import App.dtos.ProcessEventsDTO;
 import App.utils.BlockedWebsitesHandler;
 import com.google.api.services.calendar.model.Event;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
@@ -44,11 +47,17 @@ public class WindowController {
     @FXML
     private Button outcomeHideButton;
 
+    @FXML
+    private Label currentStateLabel;
 
+    @FXML
+    private Label sessionLabel;
 
+    @FXML
+    private Label timerLabel;
 
-
-
+    @FXML
+    private Label motivationalTextLabel;
 
 
     @FXML
@@ -65,14 +74,54 @@ public class WindowController {
     protected void processEvents() throws IOException, InterruptedException, GeneralSecurityException {
         List<Event> events = GoogleCalendarConnection.getEvents();
         EventService eventService = new EventService(events);
-        String processingOutcome = eventService.processEvents();
-        processingOutcomeLabel.setText(processingOutcome);
+        ProcessEventsDTO processEventsDTO = eventService.processEvents();
+
+        processingOutcomeLabel.setText(processEventsDTO.getProcessingOutcome());
         processingOutcomeLabel.setVisible(true);
         outcomeHideButton.setVisible(true);
 
+        if (processEventsDTO.getProcessingOutcome().equals("applied blocks")) {
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    for (PomodoroSession pomodoroSession : processEventsDTO.getPomodoroSessions()) {
+                        //work session
+                        int amountOfWorkingMinutes = pomodoroSession.getAmountOfWorkingMinutes();
+                        while (amountOfWorkingMinutes > 0) {
+                            try {
+                                Thread.sleep(1000);
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+                            amountOfWorkingMinutes--;
+                            int amountOfMinutesLeft = amountOfWorkingMinutes / 60;
+                            int amountOfSecondsLeft = amountOfMinutesLeft % 60;
+                            String timerText = "";
+                            if (amountOfMinutesLeft < 10) {
+                                timerText += "0" + amountOfMinutesLeft;
+                            } else {
+                                timerText += amountOfMinutesLeft;
+                            }
+                            timerText += ":";
+                            if (amountOfSecondsLeft < 10) {
+                                timerText += "0" + amountOfSecondsLeft;
+                            } else {
+                                timerText += amountOfSecondsLeft;
+                            }
+                            timerLabel.setText(timerText);
+                        }
+                    }
+                }
+            });
+            currentStateLabel.setText("Work time");
+            sessionLabel.setText("1/" + processEventsDTO.getPomodoroSessions().size());
+            timerLabel.setText("25:00");
+
+        }
     }
+
     @FXML
-    protected void hideOutcome(){
+    protected void hideOutcome() {
         processingOutcomeLabel.setVisible(false);
         outcomeHideButton.setVisible(false);
     }
