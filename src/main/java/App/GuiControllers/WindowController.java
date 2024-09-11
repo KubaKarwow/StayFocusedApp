@@ -27,39 +27,24 @@ import java.security.GeneralSecurityException;
 import java.util.List;
 
 public class WindowController {
+    @FXML
+    private Button howToUseButton;
+
+
+
+
 
     @FXML
-    private ListView<String> websitesToBlockListView;
-    @FXML
-    private Label editWebsitesLabel;
-    @FXML
-    private AnchorPane websitePane;
-    @FXML
-    private Button AddNewWebsiteButton;
-    @FXML
-    private Button DeleteWebsiteButton;
-    @FXML
-    private TextField websiteToBlockField;
-    @FXML
-    private Button exitButton;
+    private Button hideButton;
+
     @FXML
     private Label processingOutcomeLabel;
-    @FXML
-    private Button outcomeHideButton;
 
     @FXML
-    private Label currentStateLabel;
-
-    @FXML
-    private Label sessionLabel;
-
-    @FXML
-    private Label timerLabel;
-
-    @FXML
-    private Label motivationalTextLabel;
-
-
+    protected void hideOutcome(){
+        processingOutcomeLabel.setVisible(false);
+        hideButton.setVisible(false);
+    }
     @FXML
     protected void editWebsiteList(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("websitesEditWindow.fxml"));
@@ -78,9 +63,20 @@ public class WindowController {
 
         processingOutcomeLabel.setText(processEventsDTO.getProcessingOutcome());
         processingOutcomeLabel.setVisible(true);
-        outcomeHideButton.setVisible(true);
+        hideButton.setVisible(true);
+    }
 
-        if (processEventsDTO.getProcessingOutcome().equals("applied blocks")) {
+    @FXML
+    protected void showInstructions() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("instructions.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        Stage stage = new Stage();
+        stage.setTitle("Instructions");
+        stage.setScene(scene);
+        stage.show();
+    }
+}
+ /*  if (processEventsDTO.getProcessingOutcome().equals("applied blocks")) {
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
@@ -115,19 +111,5 @@ public class WindowController {
             });
             currentStateLabel.setText("Work time");
             sessionLabel.setText("1/" + processEventsDTO.getPomodoroSessions().size());
-            timerLabel.setText("25:00");
+            timerLabel.setText("25:00");*/
 
-        }
-    }
-
-    @FXML
-    protected void hideOutcome() {
-        processingOutcomeLabel.setVisible(false);
-        outcomeHideButton.setVisible(false);
-    }
-
-    @FXML
-    protected void onHelloButtonClick(ActionEvent event) throws IOException {
-        System.out.println("CONFIG JEST SUPPPPPERRRRRR");
-    }
-}

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="309.0" prefWidth="343.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label alignment="CENTER" layoutX="-3.0" prefHeight="42.0" prefWidth="350.0" style="-fx-background-color: #777777;" text="Instructions">
+         <font>
+            <Font size="28.0" />
+         </font>
+      </Label>
+      <TextArea editable="false" layoutY="42.0" prefHeight="270.0" prefWidth="343.0" text="1. This application connects to google&#10;calendar and searches for &quot;Working&quot; &#10;events (that has to be the name)&#10;and blocks the websites given by the user&#10;for the time of the event.&#10;2. During that time a pomodoro window&#10;will appear in which the time is divided&#10;into multiple sessions (25 minutes of work,&#10;5 minutes of a break. &#10;3. &quot;Process events&quot; button handles all the &#10;logic behind blocking, so if for an example, &#10;you turned your pc off before the block&#10;went off you can just click it again&#10;afterwards and it will remove the expired&#10;blocks. &#10;&#10;Enjoy using my application &lt;3!&#10;">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </TextArea>
+   </children>
+</AnchorPane>
