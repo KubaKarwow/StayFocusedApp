@@ -14,6 +14,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -64,6 +65,21 @@ public class WindowController {
         processingOutcomeLabel.setText(processEventsDTO.getProcessingOutcome());
         processingOutcomeLabel.setVisible(true);
         hideButton.setVisible(true);
+
+        if(processEventsDTO.getTimeToWaitTillTheBlockBegins() == 0 && processEventsDTO.getPomodoroSessions()!=null){
+            FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("pomodoroWindow.fxml"));
+            Object load = fxmlLoader.load();
+
+            PomodoroController pomodoroController = fxmlLoader.getController();
+            Scene scene = new Scene((Parent) load);
+            Stage stage = new Stage();
+            stage.setTitle("Hello!");
+            stage.setScene(scene);
+            stage.show();
+           // pomodoroController.startPomodoroSessions(processEventsDTO.getPomodoroSessions());
+
+        }
+
     }
 
     @FXML
@@ -76,40 +92,5 @@ public class WindowController {
         stage.show();
     }
 }
- /*  if (processEventsDTO.getProcessingOutcome().equals("applied blocks")) {
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    for (PomodoroSession pomodoroSession : processEventsDTO.getPomodoroSessions()) {
-                        //work session
-                        int amountOfWorkingMinutes = pomodoroSession.getAmountOfWorkingMinutes();
-                        while (amountOfWorkingMinutes > 0) {
-                            try {
-                                Thread.sleep(1000);
-                            } catch (InterruptedException e) {
-                                throw new RuntimeException(e);
-                            }
-                            amountOfWorkingMinutes--;
-                            int amountOfMinutesLeft = amountOfWorkingMinutes / 60;
-                            int amountOfSecondsLeft = amountOfMinutesLeft % 60;
-                            String timerText = "";
-                            if (amountOfMinutesLeft < 10) {
-                                timerText += "0" + amountOfMinutesLeft;
-                            } else {
-                                timerText += amountOfMinutesLeft;
-                            }
-                            timerText += ":";
-                            if (amountOfSecondsLeft < 10) {
-                                timerText += "0" + amountOfSecondsLeft;
-                            } else {
-                                timerText += amountOfSecondsLeft;
-                            }
-                            timerLabel.setText(timerText);
-                        }
-                    }
-                }
-            });
-            currentStateLabel.setText("Work time");
-            sessionLabel.setText("1/" + processEventsDTO.getPomodoroSessions().size());
-            timerLabel.setText("25:00");*/
+
 
