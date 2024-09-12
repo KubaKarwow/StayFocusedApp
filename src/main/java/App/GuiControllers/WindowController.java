@@ -67,6 +67,7 @@ public class WindowController {
         hideButton.setVisible(true);
 
         if(processEventsDTO.getTimeToWaitTillTheBlockBegins() == 0 && processEventsDTO.getPomodoroSessions()!=null){
+
             FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("pomodoroWindow.fxml"));
             Object load = fxmlLoader.load();
 
@@ -76,7 +77,7 @@ public class WindowController {
             stage.setTitle("Hello!");
             stage.setScene(scene);
             stage.show();
-           // pomodoroController.startPomodoroSessions(processEventsDTO.getPomodoroSessions());
+            pomodoroController.startPomodoroSessions(processEventsDTO.getPomodoroSessions());
 
         }
 

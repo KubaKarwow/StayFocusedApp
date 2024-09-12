@@ -1,36 +1,36 @@
 package App.dtos;
 
 public class PomodoroSession {
-    private int amountOfWorkingMinutes;
-    private int amountOfBreakMinutes;
+    private int amountOfWorkingSeconds;
+    private int amountOfBreakSeconds;
 
 
     public PomodoroSession(int amountOfWorkingMinutes, int amountOfBreakMinutes) {
-        this.amountOfWorkingMinutes = amountOfWorkingMinutes;
-        this.amountOfBreakMinutes = amountOfBreakMinutes;
+        this.amountOfWorkingSeconds = amountOfWorkingMinutes;
+        this.amountOfBreakSeconds = amountOfBreakMinutes;
     }
 
-    public int getAmountOfWorkingMinutes() {
-        return amountOfWorkingMinutes;
+    public int getAmountOfWorkingSeconds() {
+        return amountOfWorkingSeconds;
     }
 
-    public void setAmountOfWorkingMinutes(int amountOfWorkingMinutes) {
-        this.amountOfWorkingMinutes = amountOfWorkingMinutes;
+    public void setAmountOfWorkingSeconds(int amountOfWorkingSeconds) {
+        this.amountOfWorkingSeconds = amountOfWorkingSeconds;
     }
 
-    public int getAmountOfBreakMinutes() {
-        return amountOfBreakMinutes;
+    public int getAmountOfBreakSeconds() {
+        return amountOfBreakSeconds;
     }
 
-    public void setAmountOfBreakMinutes(int amountOfBreakMinutes) {
-        this.amountOfBreakMinutes = amountOfBreakMinutes;
+    public void setAmountOfBreakSeconds(int amountOfBreakSeconds) {
+        this.amountOfBreakSeconds = amountOfBreakSeconds;
     }
 
     @Override
     public String toString() {
         return "PomodoroSession{" +
-                "amountOfWorkingMinutes=" + amountOfWorkingMinutes +
-                ", amountOfBreakMinutes=" + amountOfBreakMinutes +
+                "amountOfWorkingMinutes=" + amountOfWorkingSeconds +
+                ", amountOfBreakMinutes=" + amountOfBreakSeconds +
                 '}';
     }
 }

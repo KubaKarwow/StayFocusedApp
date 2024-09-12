@@ -87,7 +87,6 @@ public class EventService {
         } else if(amountOfSeconds > 1500 && amountOfSeconds <=1800){
             result.add(new PomodoroSession(1500,(int)amountOfSeconds-1500));
         }
-        result.add(new PomodoroSession(1500,300));
         return result;
     }
     public ProcessEventsDTO processEvents() throws IOException, InterruptedException {
