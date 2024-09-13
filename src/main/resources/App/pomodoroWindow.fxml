@@ -23,7 +23,7 @@
                   <Font name="Arial Unicode MS" size="16.0" />
                </font>
             </Label>
-            <Label fx:id="sessionLabel" alignment="CENTER" layoutX="-2.0" layoutY="192.0" prefHeight="58.0" prefWidth="470.0" style="-fx-background-color: #7CF5FF;" text="session 1/4">
+            <Label fx:id="sessionLabel" alignment="CENTER" layoutX="-2.0" layoutY="190.0" prefHeight="62.0" prefWidth="470.0" style="-fx-background-color: #7CF5FF;" text="session 1/4">
                <font>
                   <Font name="Arial Unicode MS" size="23.0" />
                </font>

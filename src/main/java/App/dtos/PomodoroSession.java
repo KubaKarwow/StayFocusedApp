@@ -5,9 +5,9 @@ public class PomodoroSession {
     private int amountOfBreakSeconds;
 
 
-    public PomodoroSession(int amountOfWorkingMinutes, int amountOfBreakMinutes) {
-        this.amountOfWorkingSeconds = amountOfWorkingMinutes;
-        this.amountOfBreakSeconds = amountOfBreakMinutes;
+    public PomodoroSession(int amountOfWorkingSeconds, int amountOfBreakSeconds) {
+        this.amountOfWorkingSeconds = amountOfWorkingSeconds;
+        this.amountOfBreakSeconds = amountOfBreakSeconds;
     }
 
     public int getAmountOfWorkingSeconds() {
@@ -29,8 +29,8 @@ public class PomodoroSession {
     @Override
     public String toString() {
         return "PomodoroSession{" +
-                "amountOfWorkingMinutes=" + amountOfWorkingSeconds +
-                ", amountOfBreakMinutes=" + amountOfBreakSeconds +
+                "amountOfWorkingSeconds=" + amountOfWorkingSeconds +
+                ", amountOfBreakSeconds=" + amountOfBreakSeconds +
                 '}';
     }
 }

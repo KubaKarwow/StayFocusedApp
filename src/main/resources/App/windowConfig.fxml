@@ -42,7 +42,7 @@
     <children>
           <AnchorPane minWidth="-Infinity" prefHeight="112.0" prefWidth="500.0" style="-fx-background-color: #B1AFFF;">
               <children>
-                  <Button fx:id="editWebsitesButton" layoutX="40.0" layoutY="25.0" mnemonicParsing="false" onAction="#editWebsiteList" prefHeight="52.0" prefWidth="140.0" style="-fx-background-color: #FFFED3;" text="Edit website list ">
+                  <Button fx:id="editWebsitesButton" layoutX="40.0" layoutY="24.0" mnemonicParsing="false" onAction="#editWebsiteList" prefHeight="52.0" prefWidth="140.0" style="-fx-background-color: #FFFED3;" text="Edit website list ">
                <font>
                   <Font size="15.0" />
                </font>
@@ -57,8 +57,8 @@
                   <Font size="15.0" />
                </font>
             </Button>
-            <Button fx:id="hideButton" layoutX="448.0" layoutY="-1.0" minHeight="-Infinity" mnemonicParsing="false" onAction="#hideOutcome" prefHeight="27.0" prefWidth="52.0" text="Hide" />
-            <Label fx:id="processingOutcomeLabel" alignment="CENTER" layoutX="-3.0" prefHeight="27.0" prefWidth="450.0" style="-fx-background-color: #F9D689;" text="processing outcome" />
+            <Button fx:id="hideButton" layoutX="448.0" layoutY="-1.0" minHeight="-Infinity" mnemonicParsing="false" onAction="#hideOutcome" prefHeight="27.0" prefWidth="52.0" text="Hide" visible="false" />
+            <Label fx:id="processingOutcomeLabel" alignment="CENTER" layoutX="-3.0" prefHeight="27.0" prefWidth="450.0" style="-fx-background-color: #F9D689;" text="processing outcome" visible="false" />
               </children>
           </AnchorPane>
     </children>
