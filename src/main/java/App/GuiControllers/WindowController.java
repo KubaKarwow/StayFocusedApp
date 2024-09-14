@@ -14,6 +14,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -24,10 +25,12 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
 import java.security.GeneralSecurityException;
 import java.util.List;
+import java.util.ResourceBundle;
 
-public class WindowController {
+public class WindowController{
     @FXML
     private Button howToUseButton;
 
@@ -51,7 +54,7 @@ public class WindowController {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("websitesEditWindow.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         Stage stage = new Stage();
-        stage.setTitle("Hello!");
+        stage.setTitle("Edit websites");
         stage.setScene(scene);
         stage.show();
     }
@@ -74,7 +77,7 @@ public class WindowController {
             PomodoroController pomodoroController = fxmlLoader.getController();
             Scene scene = new Scene((Parent) load);
             Stage stage = new Stage();
-            stage.setTitle("Hello!");
+            stage.setTitle("Pomodoro window");
             stage.setScene(scene);
             stage.show();
             pomodoroController.startPomodoroSessions(processEventsDTO.getPomodoroSessions());

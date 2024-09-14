@@ -4,11 +4,16 @@ public class JokeResponseDTO {
 
     private String setup;
     private String delivery;
+    private String joke;
 
     public JokeResponseDTO(String setup, String delivery) {
-        this.setup = setup;
-        this.delivery = delivery;
+        this.joke = setup + " " + delivery;
     }
+
+    public JokeResponseDTO(String joke) {
+        this.joke = joke;
+    }
+
 
     public String getSetup() {
         return setup;
@@ -28,6 +33,6 @@ public class JokeResponseDTO {
 
     @Override
     public String toString() {
-        return setup + " " + delivery;
+        return joke;
     }
 }

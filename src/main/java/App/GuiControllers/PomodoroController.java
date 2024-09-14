@@ -4,16 +4,15 @@ import App.dtos.PomodoroSession;
 import App.repositories.JokeRepo;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 
-import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
+
+import javax.sound.sampled.*;
 
 public class PomodoroController {
 
@@ -29,6 +28,8 @@ public class PomodoroController {
     @FXML
     private Label sessionLabel;
 
+    //toDO could make the pomodoroWindow make some noise when the work/break ends
+    private final String SOUND_FILE_PATH = "src/main/resources/notificationSounds/notificationSound1.wav";
 
     public void startPomodoroSessions(List<PomodoroSession> sessionList) throws InterruptedException {
         sessionLabel.setText("1/"+sessionList.size());
@@ -50,8 +51,32 @@ public class PomodoroController {
                     timerLabel.setStyle("-fx-background-color: #4F75FF;");
                     motivationalTextLabel.setStyle("-fx-background-color:  #00CCDD;");
                     sessionLabel.setStyle("-fx-background-color: #7CF5FF;");
+                    File file = new File("src/main/resources/notificationSounds/notificationSound1.wav");
+                    AudioInputStream audioStream = null;
+                    try {
+                        audioStream = AudioSystem.getAudioInputStream(file);
+                    } catch (UnsupportedAudioFileException e) {
+                        throw new RuntimeException(e);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    Clip clip = null;
+                    try {
+                        clip = AudioSystem.getClip();
+                    } catch (LineUnavailableException e) {
+                        throw new RuntimeException(e);
+                    }
+                    try {
+                        clip.open(audioStream);
+                    } catch (LineUnavailableException e) {
+                        throw new RuntimeException(e);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    clip.start();
                 });
                 int amountOfWorkingSeconds = pomodoroSession.getAmountOfWorkingSeconds();
+                amountOfWorkingSeconds=20;
                 while (amountOfWorkingSeconds > 0) {
                     try {
                         Thread.sleep(1000); // usypiamy wątek na 1 sekundę
@@ -74,19 +99,46 @@ public class PomodoroController {
                 }
                 Platform.runLater( () -> {
                     stateLabel.setText("BREAK TIME");
+                    motivationalTextLabel.setText("Enjoy the break and the joke <3!");
+                    stateLabel.setStyle("-fx-background-color: #CCD5AE;");
+                    timerLabel.setStyle("-fx-background-color: #E0E5B6;");
+                    motivationalTextLabel.setStyle("-fx-background-color: #FAEDCE;");
+                    sessionLabel.setStyle("-fx-background-color: #FEFAE0;");
+                    File file = new File("src/main/resources/notificationSounds/notificationSound1.wav");
+                    AudioInputStream audioStream = null;
                     try {
-                        motivationalTextLabel.setText( new JokeRepo().getJoke().toString());
+                        audioStream = AudioSystem.getAudioInputStream(file);
+                    } catch (UnsupportedAudioFileException e) {
+                        throw new RuntimeException(e);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    Clip clip = null;
+                    try {
+                        clip = AudioSystem.getClip();
+                    } catch (LineUnavailableException e) {
+                        throw new RuntimeException(e);
+                    }
+                    try {
+                        clip.open(audioStream);
+                    } catch (LineUnavailableException e) {
+                        throw new RuntimeException(e);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    clip.start();
+                    String joke = null;
+                    try {
+                        joke = new JokeRepo().getJoke().toString();
                     } catch (URISyntaxException e) {
                         throw new RuntimeException(e);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
-                    stateLabel.setStyle("-fx-background-color: #CCD5AE;");
-                    timerLabel.setStyle("-fx-background-color: #E0E5B6;");
-                    motivationalTextLabel.setStyle("-fx-background-color: #FAEDCE;");
-                    sessionLabel.setStyle("-fx-background-color: #FEFAE0;");
+                    showJokePopup(joke);
                 });
                 int amountOfBreakSeconds = pomodoroSession.getAmountOfBreakSeconds();
+                amountOfBreakSeconds=10;
                 while(amountOfBreakSeconds > 0){
                     try{
                         Thread.sleep(1000);
@@ -110,6 +162,13 @@ public class PomodoroController {
             }
         }).start();
 
+    }
+    private void showJokePopup(String joke) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Joke time");
+        alert.setHeaderText(null);
+        alert.setContentText(joke);
+        alert.showAndWait();
     }
 }
 
